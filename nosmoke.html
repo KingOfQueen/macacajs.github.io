@@ -249,32 +249,38 @@
 </aside>
 
   <article>
-    <h1 id="nosmoke">NoSmoke</h1>
+    <h1 id="nosmoke-automated-ui-crawler">NoSmoke Automated UI Crawler</h1>
 
 <blockquote>
-  <p>A cross platform UI crawler which scans view trees then generate and execute UI test cases. with it you can:</p>
+  <p>A cross platform UI crawler which scans view trees then generate and execute UI test cases.</p>
   <ul>
-    <li>conduct automated UI test without writing a single UI test scripts!!</li>
-    <li>more accurate than mokey test!!</li>
-    <li>one tool and configuration, multiple platform!</li>
+    <li>Conduct automated UI test without writing a single UI test scripts!!</li>
+    <li>More accurate than Monkey test!!</li>
+    <li>One tool and configuration, multiple platforms!</li>
   </ul>
 </blockquote>
 
-<h2 id="how-it-works">How it works?</h2>
+<h2 id="architecture-overview">Architecture Overview</h2>
 
 <p><img src="//wx3.sinaimg.cn/large/6d308bd9gy1fkcda5ls5bj20va0cy41b.jpg" alt="image" /></p>
 
-<p>In order to design a multiplatform UI automation tool, the overall architcture is devided into 3 different layers.</p>
-
 <ul>
   <li>
-    <p>The <strong>Proxy</strong> layer, which are tester drivers wrapping local platform testing tool like UIAutomator, XCUITest. They establishes sockets which recieve and executes requests in format of <a href="//w3c.github.io/webdriver/webdriver-spec.html">web driver</a> protocol.</p>
+    <p><strong>Platform Proxies</strong>: <br />
+Platform-specific applications responsible for proxying test requests and responses between Macaca server and the applications being tested on each platform. The proxy communicates with the Macaca server over sockets using the <a href="https://w3c.github.io/webdriver/webdriver-spec.html">WebDriver</a> protocol, and with the application under test via the automated UI testing frameworks provided by each platform.<br />
+<a href="//github.com/macacajs/XCTestWD">iOS Swift XCUITest WebDriver</a> <br />
+<a href="//github.com/macacajs/UIAutomatorWD">Android UIAutomator WebDriver</a> <br /></p>
   </li>
   <li>
-    <p>The <strong>Macaca-Server</strong> layer, which are node server created on PC. It provides a set of cli-command based on which users can install the testing app and init the proxy on a specific device. Further it routes http request to proxies in various platforms.</p>
+    <p><strong>Macaca-Server</strong>: <br />
+A node.js server installed on a PC. It listens for test requests from test clients over HTTP, routes them to the platform-specific request sender for each platform (macaca-ios, macaca-android, macaca-chrome), listens for test results, and returns the response over HTTP to the test clients. It also provides a set of commands through the cli tool. <br />
+<a href="//github.com/macacajs/macaca-ios">macaca-ios package</a><br />
+<a href="//github.com/macacajs/macaca-android">macaca-android pacakge</a><br /></p>
   </li>
   <li>
-    <p>The <strong>NoSmoke</strong> layer, it contains a node client which posting various crawling and analysis commands to <strong>Macaca-Server</strong> layer. The crawling algorithm in this module utilizes the node client to fetch window sources and convert it to a DFS tree model, then eventually send out a UI action to the target app via <strong>macaca-server</strong> and <strong>proxy</strong>.</p>
+    <p><strong>NoSmoke</strong>: <br />
+It contains a node client which posting various crawling and analysis commands to <strong>Macaca-Server</strong> layer. The crawling algorithm in this module utilizes the node client to fetch window sources and convert it to a DFS tree model, then eventually send out a UI action to the target app via <strong>macaca-server</strong> and <strong>proxy</strong>.
+Responsible for initializing the Macaca service and the corresponding driver of the proxy layer. Internally it provides a client to communicate with the Macaca server using WebDriver protocol. After initialization, it posts UI crawling commands to fetch window sources and converts them into a DFS tree model, and then sends out UI interaction commands to the application under test.</p>
   </li>
 </ul>
 

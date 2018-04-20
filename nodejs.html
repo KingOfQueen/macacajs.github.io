@@ -251,15 +251,34 @@
   <article>
     <h1 id="nodejs">Node.js</h1>
 
+<h2 id="environment">Environment</h2>
+
+<p>Because the Macaca toolchain is based on Node.js, the Node.js environment has been configured during the installation and does not need to be configured again.</p>
+
+<h2 id="quickstart">Quickstart</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git clone https://github.com/macaca-sample/macaca-nodejs-boilerplate.git
+</code></pre></div></div>
+
+<p>A project that Macaca can use is created and test cases can be added and run. Macaca recommends <a href="(//github.com/mochajs/mocha)">mocha testing framework</a>.</p>
+
+<h2 id="sample-code">Sample Code</h2>
+
+<p>The <a href="//github.com/macaca-sample/sample-nodejs">sample code repository</a> contains iOS and Android’s App sample tests, sample test of mobile browser and sample test of PC browser.</p>
+
 <h2 id="usage">Usage</h2>
 
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">wd</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'macaca-wd'</span><span class="p">);</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Import official webdriver client package</span>
+<span class="kd">var</span> <span class="nx">wd</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'macaca-wd'</span><span class="p">);</span>
 
+<span class="c1">// Configure the host and port of the Macaca server that the webdriver client will connec to</span>
 <span class="kd">var</span> <span class="nx">remoteConfig</span> <span class="o">=</span> <span class="p">{</span>
   <span class="na">host</span><span class="p">:</span> <span class="s1">'localhost'</span><span class="p">,</span>
-  <span class="na">port</span><span class="p">:</span> <span class="mi">3456</span>
+  <span class="na">port</span><span class="p">:</span> <span class="mi">3456</span> <span class="c1">// Macaca server defaults to using port 3456</span>
 <span class="p">};</span>
 
+<span class="c1">// After this, the driver can directly use method chaining</span>
 <span class="kd">var</span> <span class="nx">driver</span> <span class="o">=</span> <span class="nx">wd</span><span class="p">.</span><span class="nx">promiseChainRemote</span><span class="p">(</span><span class="nx">remoteConfig</span><span class="p">);</span>
 
 <span class="nx">before</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -285,7 +304,7 @@
 <span class="p">...</span>
 </code></pre></div></div>
 
-<h2 id="extend">Extend</h2>
+<h2 id="api-extension">API Extension</h2>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">wd</span><span class="p">.</span><span class="nx">addPromiseChainMethod</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">method</span><span class="p">);</span>
 </code></pre></div></div>
@@ -293,9 +312,9 @@
 <h2 id="links">Links</h2>
 
 <ul>
-  <li><a href="//macacajs.github.io/macaca-wd">API doc</a></li>
-  <li><a href="//github.com/macacajs/macaca-wd">source code</a></li>
-  <li><a href="//github.com/macaca-sample/sample-nodejs">sample</a></li>
+  <li><a href="//macacajs.github.io/macaca-wd">API</a></li>
+  <li><a href="//github.com/macacajs/macaca-wd">Source code</a></li>
+  <li><a href="//github.com/macaca-sample/sample-nodejs">Sample</a></li>
 </ul>
 
 

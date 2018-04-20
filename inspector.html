@@ -266,12 +266,15 @@
 
 <h2 id="usage">Usage</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>app-inspector <span class="nt">-u</span> xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Directly -u device udid</span>
+<span class="nv">$ </span>app-inspector <span class="nt">-u</span> xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 </code></pre></div></div>
 
-<h3 id="ios-real-device">iOS Real Device</h3>
+<h2 id="ios-device">iOS Device</h2>
 
 <p><img src="//wx1.sinaimg.cn/large/6d308bd9gy1fg7cnt9hf6j20t70h7782.jpg" alt="" /></p>
+
+<p>TEAM ID can be passed in through the environment variable to support the device during the installation process. See above for how to obtain the TEAM_ID.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ DEVELOPMENT_TEAM_ID</span><span class="o">=</span>TEAM_ID npm i app-inspector <span class="nt">-g</span>
 </code></pre></div></div>

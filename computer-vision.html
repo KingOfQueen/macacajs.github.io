@@ -251,18 +251,26 @@
   <article>
     <h1 id="computer-vision">Computer Vision</h1>
 
+<p>Macaca provides computer vision solutions to analyze the UI outside the View system, e.g. to identify screenshots during testing, test game products, etc. This document will describe how OpenCV, Sikuli, and other widely used libraries are used in conjunction with Macaca, and introduces the NodeCV service deployment, after which you can use this graphics service anytime, anywhere.</p>
+
 <h2 id="opencv">OpenCV</h2>
 
 <h3 id="installation">Installation</h3>
 
-<p>for MacOS, please use brew to install opencv2:</p>
+<p>For MacOS, please use brew to install opencv2:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>brew <span class="nb">install </span>opencv
 </code></pre></div></div>
 
+<p>Please use the stable version of <a href="//codeload.github.com/opencv/opencv/zip/2.4.13.2">v2 (2.4.13.2)</a>. For installation on Windows platform, please refer to the <a href="//github.com/opencv/opencv">OpenCV website</a>.</p>
+
+<p>If you do not want to install on your local machine, please use the NodeCV service mentioned later to avoid any problems in the environment.</p>
+
 <h3 id="usage">Usage</h3>
 
 <h4 id="nodejs">Node.js:</h4>
+
+<p>You only need to introduce <a href="https://github.com/xudafeng/nodecv">nodecv</a> module to use the image similarity, feature matching, feature recognition and other functions.</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">nodecv</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'nodecv'</span><span class="p">);</span>
 
@@ -284,11 +292,22 @@
 <span class="p">});</span>
 </code></pre></div></div>
 
-<p>from: <a href="//github.com/macaca-sample/cv-sample-node">macaca-sample/cv-sample-node</a>。</p>
+<p>Matching method enumeration:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CV_TM_SQDIFF        =0 Square difference matching method
+CV_TM_SQDIFF_NORMED =1 Normalized squared difference matching metho
+CV_TM_CCORR         =2 Correlation matching method
+CV_TM_CCORR_NORMED  =3 Normalized Correlation Matching
+CV_TM_CCOEFF        =4 Correlation coefficient matching method
+CV_TM_CCOEFF_NORMED =5 Normalized correlation coefficient matching method
+</code></pre></div></div>
+
+<p>For more Node.js samples, visit <a href="//github.com/macaca-sample/cv-sample-node">macaca-sample/cv-sample-node</a>。</p>
 
 <h4 id="python">Python:</h4>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 
 <span class="k">class</span> <span class="nc">opencvSample</span><span class="p">:</span>
@@ -307,45 +326,82 @@
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">argmax</span><span class="p">(),</span> <span class="n">result</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>from: <a href="//github.com/macaca-sample/cv-sample-python">macaca-sample/cv-sample-python</a>。</p>
+<p>For more Python samples, visit <a href="//github.com/macaca-sample/cv-sample-python">macaca-sample/cv-sample-python</a>。</p>
 
 <h4 id="java">Java:</h4>
 
-<p>from: <a href="//github.com/macaca-sample/cv-sample-java">macaca-sample/cv-sample-java</a>。</p>
+<p>For Java, please directly use <a href="//github.com/bytedeco/javacv">JavaCV</a>. For more Java samples, visit <a href="//github.com/macaca-sample/cv-sample-java">macaca-sample/cv-sample-java</a>.</p>
 
-<h3 id="use-as-service">Use As Service</h3>
+<h3 id="nodecv-as-a-service">NodeCV as a Service</h3>
+
+<p>Macaca provides easy deployment of OpenCV services and requires only a Docker environment for one-click deployment.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git clone https://github.com/macacajs/nodecv-server.git <span class="nt">--depth</span><span class="o">=</span>1
 <span class="nv">$ </span><span class="nb">cd </span>nodecv-server
 <span class="nv">$ </span>docker build <span class="nb">.</span> <span class="nt">-t</span><span class="o">=</span><span class="s2">"node-server"</span>
 </code></pre></div></div>
+<p>You can then start OpenCV’s HTTP service in any server environment, or even on a <a href="//github.com/macacajs/nodecv-server/issues/1">Raspberry Pi</a>, and <a href="//github.com/macaca-sample">macaca-sample</a> also provides examples of language-specific server-side communication.</p>
 
-<p>Please visit demo page： <code class="highlighter-rouge">http://localhost:9900/opencv/demo</code></p>
+<p>After starting the server, please visit <code class="highlighter-rouge">http://localhost:9900/opencv/demo</code></p>
 
 <p><img src="//wx3.sinaimg.cn/large/6d308bd9gy1fek6oa9i3vj21kw0zrn4y.jpg" alt="" /></p>
 
-<p>API DOC: <a href="//github.com/macacajs/nodecv-server">nodecv-server</a>, <a href="//github.com/macacajs/nodecv-server/issues/1">Raspberry Pi</a></p>
+<h2 id="api">API</h2>
 
-<h2 id="other">Other</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /opencv/dissimilarity
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /opencv/matchtemplate
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /opencv/cascadedetect
+</code></pre></div></div>
+
+<p>HTTP service request example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">({</span>
+  <span class="na">url</span><span class="p">:</span> <span class="s2">`</span><span class="p">${</span><span class="nx">remoteHost</span><span class="p">}</span><span class="s2">/opencv/dissimilarity`</span><span class="p">,</span>
+  <span class="na">formData</span><span class="p">:</span> <span class="nx">formData</span>
+<span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">httpResponse</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'upload failed:'</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Server responded with:'</span><span class="p">,</span> <span class="nx">body</span><span class="p">);</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Dissimilarity is: </span><span class="p">${</span><span class="nx">data</span><span class="p">.</span><span class="nx">dissimilarity</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+</code></pre></div></div>
+
+<p>For more information, visit <a href="//github.com/macacajs/nodecv-server">nodecv-server</a>.</p>
+
+<h2 id="other-solutions">Other Solutions</h2>
 
 <h3 id="sikuli">Sikuli</h3>
 
-<p><a href="//github.com/sikuli/sikuli">Sikuli</a> is a visual technology to automate graphical user interfaces (GUI) using images (screenshots).</p>
+<p><a href="//github.com/sikuli/sikuli">Sikuli</a> is a graphics scripting language, and can be used with Macaca to automate graphical user interfaces (GUI) using images (screenshots).</p>
 
 <h3 id="tesseract">Tesseract</h3>
 
-<p><a href="//github.com/tesseract-ocr/tesseract">tesseract</a> for OCR。</p>
+<p><a href="//github.com/tesseract-ocr/tesseract">tesseract</a> excels at OCR, and can be used with OpenCV.</p>
 
 <h3 id="image-diff">Image Diff</h3>
+
+<p>For image diff based on pixel contrast, the following can be used:</p>
 
 <ul>
   <li><a href="//github.com/uber-archive/image-diff">uber-archive/image-diff</a></li>
   <li><a href="//github.com/yahoo/blink-diff">yahoo/blink-diff</a></li>
-  <li><a href="//github.com/macaca-sample/react-native-sample">macaca-sample/react-native-sample</a></li>
-  <li><a href="//github.com/hiloteam/Hilo">hiloteam/Hilo</a></li>
 </ul>
 
+<p>Example usage with Macaca <a href="//github.com/macaca-sample/react-native-sample">macaca-sample/react-native-sample</a>. Effect is as follows</p>
+
 <p><img src="http://ww3.sinaimg.cn/large/6d308bd9gw1f3ymytc3mzj21kw0xpjx1.jpg" alt="" /></p>
+
+<p>The game framework Hilo is also based on pixel comparison. See the example of combining with Macaca. See the <a href="//github.com/hiloteam/Hilo">hiloteam/Hilo</a>.</p>
 
 
   </article>

@@ -249,15 +249,19 @@
 </aside>
 
   <article>
-    <h1 id="coverage">Coverage</h1>
+    <h1 id="coverage-statistics">Coverage Statistics</h1>
 
-<p>Macaca provide coverage tool to support multiple platform, Web, Android, iOS. We can get coverage report after UI testing.</p>
+<p>Macaca provides a tool for multiple platforms: Web, Android, iOS to collect code coverage statistics during test execution and generate coverage report after completion of test.</p>
+
+<blockquote>
+  <p>Code coverage is an important measure of test effectiveness.</p>
+</blockquote>
 
 <h2 id="web">Web</h2>
 
 <p>In order to collect coverage data, please use <a href="//github.com/macacajs/macaca-coverage">macaca-coverage</a> and extend webdriver API.</p>
 
-<p>like this:</p>
+<p>Example:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">wd</span><span class="p">.</span><span class="nx">addPromiseChainMethod</span><span class="p">(</span><span class="s1">'coverage'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">coverageHtml</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">cwd</span><span class="p">,</span> <span class="s1">'coverage'</span><span class="p">,</span> <span class="s1">'index.html'</span><span class="p">);</span>
@@ -290,11 +294,11 @@
 <span class="p">});</span>
 </code></pre></div></div>
 
-<p>mocha example:</p>
+<p>Recommend to collect coverage statistics after each test case:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">afterEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">driver</span>
-    <span class="p">.</span><span class="nx">coverage</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">coverage</span><span class="p">()</span>	<span class="c1">// Collect coverage statistics</span>
     <span class="p">.</span><span class="nx">saveScreenshots</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div></div>
@@ -303,15 +307,15 @@
 
 <p><img src="https://wx3.sinaimg.cn/large/6d308bd9gy1forl1pd99pj211x0rtgrt.jpg" alt="" /></p>
 
-<p>React, Vue, and common front-end projects are supportd, <a href="//github.com/macacajs/awesome-macaca#coverage">More sample</a>.</p>
+<p>React, Vue, and common front-end projects are supportd. <a href="//github.com/macacajs/awesome-macaca#coverage">More examples</a>.</p>
 
-<p><strong>Note</strong>：We use <a href="//github.com/gotwarlost/istanbul">istanbul</a> for coverage, project should be instrumented before testing.</p>
+<p><strong>Note</strong>：We use <a href="//github.com/gotwarlost/istanbul">istanbul</a> for JavaScript code coverage. Project should be instrumented before testing.</p>
 
 <hr />
 
 <h2 id="android">Android</h2>
 
-<p>JaCoCo configuration on Andrid Studio by <code class="highlighter-rouge">Gradle</code> scripts.</p>
+<p>Using Android Studio 2.x as an example. The most common method is to introduce the Jacoco plug-in to enable the coverage switch in the <code class="highlighter-rouge">Gradle</code> script.</p>
 
 <div class="language-gradle highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apply</span> <span class="nl">plugin:</span> <span class="s1">'jacoco'</span>
 
@@ -328,7 +332,7 @@
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p>Execute <code class="highlighter-rouge">collect2ExecFile</code> to generate <code class="highlighter-rouge">.exec</code> file, which include the coverage data.</p>
+<p>Then use the Jacoco provided collection method <code class="highlighter-rouge">collect2ExecFile</code> to generate the <code class="highlighter-rouge">.exec</code> file, which contains the coverage data, by reflection.</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">collect2ExecFile</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">isNew</span><span class="o">)</span> <span class="o">{</span>
     <span class="n">String</span> <span class="n">coverageFileDir</span> <span class="o">=</span> <span class="n">Environment</span><span class="o">.</span><span class="na">getExternalStorageDirectory</span><span class="o">()</span>
@@ -362,10 +366,12 @@
 <span class="o">}</span>
 </code></pre></div></div>
 
+<p>Get the <code class="highlighter-rouge">coverage.exec</code> file</p>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ adb pull /storage/emulated/0/coverage.exec .
 </code></pre></div></div>
 
-<p>Generate report by Macaca coverage tool:</p>
+<p>Generate report with Macaca coverage tool:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>macaca coverage <span class="nt">-r</span> java <span class="nt">-f</span> ./coverage.exec <span class="nt">-c</span> ./android_app_bootstrap/build/intermediates/classes/debug <span class="nt">-s</span> ./android_app_bootstrap/src/main/java <span class="nt">--html</span> ./reporter
 </code></pre></div></div>
@@ -373,17 +379,21 @@
 
 <p><img src="https://wx3.sinaimg.cn/large/6d308bd9gy1forl1qxn7ij21kw16zkam.jpg" alt="" /></p>
 
-<p><strong>Node</strong>：All our source code could be found in <a href="//github.com/macacajs/awesome-macaca#coverage">sample</a>.</p>
+<p><strong>Note</strong>：Java code coverage is done using the popular <a href="(//github.com/jacoco/jacoco)">Jacoco</a> package. Please refer to the <a href="//github.com/macacajs/awesome-macaca#coverage">sample</a>.</p>
 
 <hr />
 
 <h2 id="ios">iOS</h2>
 
+<p>The current implementation for iOS requires Xcode’s coverage collection switch to be enabled, and then introduce the Mac-provided iOS driver package <code class="highlighter-rouge">xctestwd</code> to test</p>
+
 <p>Enable test coverage by ticking the <code class="highlighter-rouge">Gather coverage data</code> checkbox when editing a scheme:</p>
 
 <p><img src="https://wx2.sinaimg.cn/large/6d308bd9gy1forlbdrx66j20ow0e0q55.jpg" alt="" /></p>
 
-<p>Generate report by Macaca coverage tool:</p>
+<p><strong>Note</strong>: The next release will provide an intrusive integration package that integrates directly with the application without relying on launching Xcode. The current version does not yet support this feature.</p>
+
+<p>After completion of test, generate report with Macaca coverage tool:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>macaca coverage <span class="nt">-r</span> ios <span class="nt">-n</span> ios-app-bootstrap <span class="nt">-p</span> ./ios-app-bootstrap.xcodeproj <span class="nt">--html</span> ./reporter
 </code></pre></div></div>
@@ -392,13 +402,13 @@
 
 <p><img src="https://wx3.sinaimg.cn/large/6d308bd9gy1forlgyonr0j21030ok79b.jpg" alt="" /></p>
 
-<p><strong>Note</strong>：iOS coverage report require <a href="//github.com/SlatherOrg/slather">slather</a> installed in your system, all our source code could be found in <a href="//github.com/macacajs/awesome-macaca#coverage">sample</a>。</p>
+<p><strong>Note</strong>：iOS coverage report requires <a href="//github.com/SlatherOrg/slather">slather</a> to be installed in your system. <a href="//github.com/macacajs/awesome-macaca#coverage">Sample</a>.</p>
 
 <hr />
 
 <h2 id="command-line-tool">Command-line Tool</h2>
 
-<p><code class="highlighter-rouge">macaca-cli</code> is an all-in-one tool sets, and include <code class="highlighter-rouge">coverage</code> command, please install it flow <a href="./quick-start">quick start</a> document.</p>
+<p><code class="highlighter-rouge">macaca-cli</code> is an all-in-one command-line tool, including the <code class="highlighter-rouge">coverage</code> command. To install, follow the <a href="./quick-start">quick start guide</a>.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>macaca coverage <span class="nt">-h</span>
 </code></pre></div></div>
@@ -418,11 +428,14 @@
     -h, --help            output usage information
 </code></pre></div></div>
 
+<p>Currently supports several common format (<code class="highlighter-rouge">html</code>, <code class="highlighter-rouge">xml</code>, <code class="highlighter-rouge">json</code>) reporters.</p>
+
 <p><strong>Note</strong></p>
 
 <ul>
-  <li>option <code class="highlighter-rouge">runtime type</code> is required</li>
-  <li>for Java, <code class="highlighter-rouge">classfiles</code> is required, and you must pass the <code class="highlighter-rouge">source</code> if you want the code lines schedule.</li>
+  <li>Runtime type option <code class="highlighter-rouge">--runtime</code> or <code class="highlighter-rouge">-r</code> is required</li>
+  <li>For Java, compiled classfiles location (<code class="highlighter-rouge">--classfiles</code>) is required. If you want source code line mapping, you must set the <code class="highlighter-rouge">--source</code> option.</li>
+  <li>iOS project requires project address <code class="highlighter-rouge">--project</code> or <code class="highlighter-rouge">-p</code> and specific <code class="highlighter-rouge">scheme</code> name.</li>
 </ul>
 
 
