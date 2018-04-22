@@ -251,17 +251,20 @@
   <article>
     <h1 id="nosmoke-自动冒烟遍历器">NoSmoke 自动冒烟遍历器</h1>
 
-<blockquote>
-  <p>支持多端的自动化遍历测试工具，基于深度遍历算法，具有以下特点:</p>
-  <ul>
-    <li>不需编写UI 测试脚本!!</li>
-    <li>比monkey test 更精准!!</li>
-    <li>一套工具，多个平台!!</li>
-  </ul>
-</blockquote>
+<p>一款跨平台的UI 自动化遍历测试工具，全套文档请见 <a href="https://github.com/macacajs/NoSmoke/wiki">wiki</a></p>
 
-<h2 id="架构剖析">架构剖析</h2>
-<p><img src="//wx3.sinaimg.cn/large/6d308bd9gy1fkcda5ls5bj20va0cy41b.jpg" alt="image" /></p>
+<h2 id="1-nosmoke-的优势">1. NoSmoke 的优势:</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><strong>自动化UI 遍历</strong> 成本低廉</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><strong>高精度测试</strong> DFS 算法</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><strong>跨平台支持</strong> iOS，安卓，以及PC Web!! :]</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><strong>测试结果可视化</strong> 见 <a href="https://github.com/macacajs/macaca-reporter">Macaca-Reporter</a></li>
+</ul>
+
+<h2 id="2-how-it-works">2. How it works?</h2>
+
+<p><img src="https://raw.githubusercontent.com/wiki/macacajs/NoSmoke/assets/macaca-architecture.png" alt="" /></p>
 
 <ul>
   <li>
@@ -282,6 +285,83 @@ macaca-android 封装: <a href="//github.com/macacajs/macaca-android">macaca-an
 抓取， 分解界面可操作的基本元素后， 通过client 与router 进行交互， 发出操作指令，并进一步分解刷新后的界面. <br /></p>
   </li>
 </ul>
+
+<h2 id="3-why-the-name">3. Why the name?</h2>
+
+<p>Since all the good ones are taken, <code class="highlighter-rouge">NoSmoke</code> comes from the ideas across <code class="highlighter-rouge">smoke testing</code>, but smoke is not good for health …</p>
+
+<h2 id="4-功能">4. 功能</h2>
+
+<h3 id="41-跨平台">4.1 跨平台</h3>
+
+<p>同时支持 <strong>iOS</strong>, <strong>Android</strong> and <strong>PC Web</strong>, <a href="//github.com/macacajs/macaca-reporter">macaca-reporter</a> 的测试， 测试结果可通过macaca-reporter 收集</p>
+
+<h4 id="for-android">For Android</h4>
+
+<p><img src="https://user-images.githubusercontent.com/8198256/31303578-988f5db2-ab42-11e7-8b96-52175fe4ba92.gif" alt="macaca-android" /></p>
+
+<h4 id="for-ios">For iOS</h4>
+
+<p><img src="https://user-images.githubusercontent.com/8198256/31303576-98897564-ab42-11e7-9a12-36e5aaf5161d.gif" alt="macaca-ios" /></p>
+
+<h4 id="for-pc-web">For PC-Web</h4>
+
+<p><img src="https://user-images.githubusercontent.com/8198256/31303577-988df9c2-ab42-11e7-8c60-1bd456cedddd.gif" alt="web-pc" /></p>
+
+<h3 id="42-可配置">4.2 可配置</h3>
+
+<p>配置能力可见 <a href="https://github.com/macacajs/NoSmoke/wiki">这里</a>， 同时提供各个平台运行的<a href="https://github.com/macacajs/NoSmoke/wiki/configuration-templates">模版</a></p>
+
+<h3 id="43-可插庄">4.3 可插庄</h3>
+
+<p>插庄说明以及模版见 <a href="https://github.com/macacajs/NoSmoke/wiki/hook-templates">这里</a></p>
+
+<h2 id="5-设置">5. 设置</h2>
+
+<h3 id="51-依赖声明">5.1. 依赖声明:</h3>
+
+<ul>
+  <li>iOS simulator 11.0 and xcode 9.0 and above.</li>
+  <li>Android 6.0 and above, supporting both device and simulator. For real device testing please install null-keyboard</li>
+</ul>
+
+<p><strong>Note</strong> 可在5.2 后执行一下命令检查依赖是否正确安装:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm i macaca-cli <span class="nt">-g</span>
+<span class="nv">$ </span>macaca doctor
+</code></pre></div></div>
+
+<h3 id="52-运行">5.2. 运行:</h3>
+
+<h5 id="step-1-安装"><strong>Step 1.</strong> 安装:</h5>
+
+<p>所有依赖的安装:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm i macaca-android <span class="nt">-g</span>
+<span class="nv">$ </span>npm i macaca-ios <span class="nt">-g</span>
+<span class="nv">$ </span>npm i macaca-cli <span class="nt">-g</span>
+<span class="nv">$ </span>npm i macaca-electron <span class="nt">-g</span>
+</code></pre></div></div>
+
+<p>一键安装nosmoke:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm i nosmoke <span class="nt">-g</span>
+</code></pre></div></div>
+
+<h5 id="step-2-运行"><strong>Step 2.</strong> 运行:</h5>
+
+<p>在工作路径，运行一下指令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c"># initialize macaca server</span>
+macaca server <span class="nt">--verbose</span> &amp;
+
+<span class="c"># initialize nosmoke</span>
+nosmoke
+</code></pre></div></div>
+
+<p><strong>Note:</strong> nosmoke 提供了详细的运行参数说明，请见: <code class="highlighter-rouge">nosmoke --help</code> <br />
+<strong>Note:</strong> 单独执行nosmoke 不带其他参数只会启动默认的demo app， 运行特定的app 需要提供配置文件， nosmoke -c ‘配置文件地址’</p>
 
 <p>更多信息， 请访问 <a href="//github.com/macacajs/NoSmoke">macacajs/NoSmoke</a></p>
 

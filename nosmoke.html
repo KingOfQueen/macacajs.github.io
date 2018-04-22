@@ -251,40 +251,112 @@
   <article>
     <h1 id="nosmoke-automated-ui-crawler">NoSmoke Automated UI Crawler</h1>
 
-<blockquote>
-  <p>A cross platform UI crawler which scans view trees then generate and execute UI test cases.</p>
-  <ul>
-    <li>Conduct automated UI test without writing a single UI test scripts!!</li>
-    <li>More accurate than Monkey test!!</li>
-    <li>One tool and configuration, multiple platforms!</li>
-  </ul>
-</blockquote>
+<p>A cross platform UI crawler which scans view trees then generate and execute UI test cases. For full set of documentation, please refer to:
+<a href="https://github.com/macacajs/NoSmoke/wiki">wiki</a></p>
 
-<h2 id="architecture-overview">Architecture Overview</h2>
+<h2 id="1-advantages-of-nosmoke">1. Advantages of NoSmoke:</h2>
 
-<p><img src="//wx3.sinaimg.cn/large/6d308bd9gy1fkcda5ls5bj20va0cy41b.jpg" alt="image" /></p>
+<p>With it you can:</p>
 
-<ul>
-  <li>
-    <p><strong>Platform Proxies</strong>: <br />
-Platform-specific applications responsible for proxying test requests and responses between Macaca server and the applications being tested on each platform. The proxy communicates with the Macaca server over sockets using the <a href="https://w3c.github.io/webdriver/webdriver-spec.html">WebDriver</a> protocol, and with the application under test via the automated UI testing frameworks provided by each platform.<br />
-<a href="//github.com/macacajs/XCTestWD">iOS Swift XCUITest WebDriver</a> <br />
-<a href="//github.com/macacajs/UIAutomatorWD">Android UIAutomator WebDriver</a> <br /></p>
-  </li>
-  <li>
-    <p><strong>Macaca-Server</strong>: <br />
-A node.js server installed on a PC. It listens for test requests from test clients over HTTP, routes them to the platform-specific request sender for each platform (macaca-ios, macaca-android, macaca-chrome), listens for test results, and returns the response over HTTP to the test clients. It also provides a set of commands through the cli tool. <br />
-<a href="//github.com/macacajs/macaca-ios">macaca-ios package</a><br />
-<a href="//github.com/macacajs/macaca-android">macaca-android pacakge</a><br /></p>
-  </li>
-  <li>
-    <p><strong>NoSmoke</strong>: <br />
-It contains a node client which posting various crawling and analysis commands to <strong>Macaca-Server</strong> layer. The crawling algorithm in this module utilizes the node client to fetch window sources and convert it to a DFS tree model, then eventually send out a UI action to the target app via <strong>macaca-server</strong> and <strong>proxy</strong>.
-Responsible for initializing the Macaca service and the corresponding driver of the proxy layer. Internally it provides a client to communicate with the Macaca server using WebDriver protocol. After initialization, it posts UI crawling commands to fetch window sources and converts them into a DFS tree model, and then sends out UI interaction commands to the application under test.</p>
-  </li>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><strong>Automated UI test</strong> with simple configuration</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><strong>More accurate than monkey test</strong> with view tree crawling</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><strong>Multiple platforms</strong> iOS, Android and Web !! :]</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" /><strong>Testing result visualisation</strong> via <a href="https://github.com/macacajs/macaca-reporter">Macaca-Reporter</a></li>
 </ul>
 
-<p>For more information, please visit: <a href="//github.com/macacajs/NoSmoke">macacajs/NoSmoke</a></p>
+<h2 id="2-how-it-works">2. How it works?</h2>
+
+<p>In order to design a multiplatform UI automation tool, the overall architcture is devided into 3 different layers.</p>
+
+<ul>
+  <li>The <strong>Proxy</strong> layer, which are tester drivers wrapping local platform testing tool like UIAutomator, XCUITest. They establishes sockets which recieve and executes requests in format of <a href="https://www.w3.org/TR/webdriver/">web driver</a> protocol.</li>
+  <li>The <strong>Macaca-Server</strong> layer, which are node server created on PC. It provides a set of cli-command based on which users can install the testing app and init the proxy on a specific device. Further it routes http request to proxies in various platforms.</li>
+  <li>The <strong>NoSmoke</strong> layer, it contains a node client which posting various crawling and analysis commands to <strong>Macaca-Server</strong> layer. The crawling algorithm in this module utilizes the node client to fetch window sources and convert it to a DFS tree model, then eventually send out a UI action to the target app via <strong>macaca-server</strong> and <strong>proxy</strong>.</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/wiki/macacajs/NoSmoke/assets/macaca-architecture.png" alt="" /></p>
+
+<h2 id="3-why-the-name">3. Why the name?</h2>
+
+<p>Since all the good ones are taken, <code class="highlighter-rouge">NoSmoke</code> comes from the ideas across <code class="highlighter-rouge">smoke testing</code>, but smoke is not good for health …</p>
+
+<h2 id="4-features">4. Features</h2>
+
+<h3 id="41-muliplatform">4.1 Muliplatform</h3>
+
+<p>NoSmoke supports UI crawling and testing for <strong>iOS</strong>, <strong>Android</strong> and <strong>PC Web</strong>, <a href="//github.com/macacajs/macaca-reporter">macaca-reporter</a> is used to gather and present the crawling process. During the execution of nosmoke, the current page and relevent action info will be revealed on reporter:</p>
+
+<h4 id="for-android">For Android</h4>
+
+<p><img src="https://user-images.githubusercontent.com/8198256/31303578-988f5db2-ab42-11e7-8b96-52175fe4ba92.gif" alt="macaca-android" /></p>
+
+<h4 id="for-ios">For iOS</h4>
+
+<p><img src="https://user-images.githubusercontent.com/8198256/31303576-98897564-ab42-11e7-9a12-36e5aaf5161d.gif" alt="macaca-ios" /></p>
+
+<h4 id="for-pc-web">For PC-Web</h4>
+
+<p><img src="https://user-images.githubusercontent.com/8198256/31303577-988df9c2-ab42-11e7-8c60-1bd456cedddd.gif" alt="web-pc" /></p>
+
+<h3 id="42-configurable">4.2 Configurable</h3>
+<p>Confirguration params and configuration templates for android/iOS/web demos
+<a href="https://github.com/macacajs/NoSmoke/wiki/configuration-templates">templates</a>
+<a href="https://github.com/macacajs/NoSmoke/wiki/configuration-parameters">list of configuration</a></p>
+
+<h3 id="43-hooks">4.3 Hooks</h3>
+
+<p>There are several hook API provided to provide further space to realize your own customization.
+<a href="https://github.com/macacajs/NoSmoke/wiki/hook-templates">hooks reference</a></p>
+
+<h2 id="5-setup">5. Setup</h2>
+
+<h3 id="51-requirements">5.1. Requirements:</h3>
+
+<ul>
+  <li>iOS simulator 11.0 and xcode 9.0 and above.</li>
+  <li>Android 6.0 and above, supporting both device and simulator. For real device testing please install null-keyboard</li>
+</ul>
+
+<p><strong>Note</strong> You could also check environment by <code class="highlighter-rouge">macaca doctor</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm i macaca-cli <span class="nt">-g</span>
+<span class="nv">$ </span>macaca doctor
+</code></pre></div></div>
+
+<h3 id="52-setup--run">5.2. Setup &amp; Run:</h3>
+
+<h5 id="step-1-setup"><strong>Step 1.</strong> Setup:</h5>
+
+<p>Full list of dependencies:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm i macaca-android <span class="nt">-g</span>
+<span class="nv">$ </span>npm i macaca-ios <span class="nt">-g</span>
+<span class="nv">$ </span>npm i macaca-cli <span class="nt">-g</span>
+<span class="nv">$ </span>npm i macaca-electron <span class="nt">-g</span>
+</code></pre></div></div>
+
+<p>Install nosmoke in a single line:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm i nosmoke <span class="nt">-g</span>
+</code></pre></div></div>
+
+<h5 id="step-2-run-it"><strong>Step 2.</strong> Run it:</h5>
+
+<p>In your workspace directory, execute the following command</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c"># initialize macaca server</span>
+macaca server <span class="nt">--verbose</span> &amp;
+
+<span class="c"># initialize nosmoke</span>
+nosmoke
+</code></pre></div></div>
+
+<p><strong>Note:</strong> For full set of command please check: <code class="highlighter-rouge">nosmoke --help</code> <br />
+<strong>Note:</strong> Invoking nosmoke itself will simply run the default demo application. To run your own application, you should put -h (which is optional) and -c (the path of the configuration file is a must) in order to run the crawler</p>
+
+<p>For more information, please visit <a href="//github.com/macacajs/NoSmoke">macacajs/NoSmoke</a></p>
 
 
   </article>
